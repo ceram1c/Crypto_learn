@@ -53,13 +53,17 @@ for c in string:
 
 ![image](https://github.com/user-attachments/assets/1d6756d2-04da-45a3-b5c5-cde9c1128574)
 
+flag của bài này đã được xor với 3 key ngẫu nhiên khác nhau, 2 key còn lại cũng bị tương tự chỉ còn key 1
 
+ta sử dụng tính chất "A ^ B = C | C ^ B = A" từ đó có thể tính ra được lần lượt các key 2, key 3 rồi tới flag
+
+- đầu tiên chuyển 3 đoạn mã về lại dạng hex rồi thực hiện việc xor từ bit của 2 dãy 1 để tìm ra key2, key3, rồi tới flag
 
 
 
 Code python giải bài:
 ```py
-# tạo 1 func để duyệt qua và xor từng bit của 2 dãydãy
+# tạo 1 func để duyệt qua và xor từng bit của 2 dãy
 def xor_byte(a, b):
     return bytes(x^y for x, y in zip(a, b))
 
@@ -81,7 +85,34 @@ FLAG = xor_byte(xor_byte(xor_byte(FLAGxorKEY1xorKEY3xorKEY2, KEY1), KEY2), KEY3)
 print(FLAG.decode('utf-8'))
 ```
 
-
-
 ![image](https://github.com/user-attachments/assets/133e35ba-588f-4e29-9b58-c817cfa41db1)
+
+
+
+#  Favourite byte
+
+![image](https://github.com/user-attachments/assets/513f98e5-2516-45ac-9e4b-eeb1b6542fd2)
+
+đoạn mã của bài này là flag được XOR với 1 byte đơn lẻ duy nhất nhưng không được cho biết
+1 single byte có thể chứ 256 giá trị khác nhau bất kỳ, tận dụng điều đó ta là 1 vòng lặp duyệt từng giá trị từ 1-->256 và XOR ngược đoạn mã với nó để để tìm flag, nếu kết quá bắt đầu theo form "crypto{" thì break và trả giá trị  
+
+Code python giải bài:
+```py
+string = '73626960647f6b206821204f21254f7d694f7624662065622127234f726927756d'
+xor= bytes.fromhex(string)
+
+# xor đoạn mã với từng giá trị byte để dò tìm byte đúng
+for i in range(1, 256):
+    text = bytes(b^i for b in xor)
+    flag = "".join(chr(b) for b in text)
+    # nếu flag xor ra bắt đầu từ fromat "crypto{}" thì ngay lập tức break vòng lặp và trả về flag
+    if flag.startswith("crypto"):
+        break
+print(flag)
+```
+
+![image](https://github.com/user-attachments/assets/d48917de-e831-4919-a279-48bb10ac5ddc)
+
+
+
 
