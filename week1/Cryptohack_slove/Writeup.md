@@ -116,3 +116,53 @@ print(flag)
 
 
 
+# You either know, XOR you don't
+
+![image](https://github.com/user-attachments/assets/c61dda33-1ca0-4fa0-97b9-822802646e99)
+
+
+đoạn mã theo như bài ra đã được XOR với 1 KEY secret. Tương tự với tính chất "A ^ B = C | C ^ A = B".
+Thì ta có thể hiểu rằng "Flag ^ Key = cipher | cipher ^ Key = Flag".
+1 ví dụ tương tự:
+
+![image](https://github.com/user-attachments/assets/a958ffd7-555d-4955-bcc7-ef9fa0b2d0ae)
+
+ta xor flag "Flag2808{H3110}" với 1 key "Secret" sẽ có được 1 đoạn kết qua từ phép xor
+
+![image](https://github.com/user-attachments/assets/1b7d8ee4-9ca3-4365-939f-6196ec71e7a8)
+
+tiếp tục xor kết quả với flag từ trước ta sẽ nhận được 1 đoạn "secret" là key ban dầu của phép tính
+
+### ==> key ^ flag = cipher | cipher ^ flag = key
+
+áp dụng từ ví dụ trên ta sử dụng đoạn mã bài cho xor với flag có form "crypto{" để tìm key ban đầu 
+
+![image](https://github.com/user-attachments/assets/b9758e14-6dab-4c6d-b7aa-e3bd6b74400e)
+
+từ kết quả ta có thể guess rằng key của bài là "myXORkey" để giải bài này
+
+Code python giải bài:
+```py
+string = '0e0b213f26041e480b26217f27342e175d0e070a3c5b103e2526217f27342e175d0e077e263451150104'
+a='myXORkey'
+xor= bytes.fromhex(string)
+key = bytes(a, 'utf-8')
+# xor từng ký tự của dãy mã với lần lượt các ký tự của key, khi hết key thì lặp lại cho tới khi hết ký tự của đoạn mã
+text = bytes([b ^ key[i%len(key)] for i, b in enumerate(xor)])
+print(text)
+```
+
+![image](https://github.com/user-attachments/assets/dd9ff35f-f546-4c2e-b4aa-c7cbcaa6eb31)
+
+
+
+
+
+
+
+
+
+
+
+
+
