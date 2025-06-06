@@ -34,6 +34,17 @@ Vậy flag là -8404
 # Modular Arithmetic 1
 
 ![image](https://github.com/user-attachments/assets/51e6d36c-e9d6-4478-ae61-fae25bf5e720)
+đề bài yêu cầu ta tìm x, y theo phương trình trong đề bài, rồi tìm số bé hơn là flag 
+
+x = 11%6 = 5
+y = 8146798528947 % 17 = 4
+
+![image](https://github.com/user-attachments/assets/185b66fd-f61d-47d6-bc6e-ff1d940821c1)
+vậy flag là 4
+
+# Modular Arithmetic 2
+
+![image](https://github.com/user-attachments/assets/fff10e8f-3163-4019-a05b-c6dbca009fb1)
 
 
 
