@@ -156,14 +156,61 @@ def encrypt_flag(flag):
 
 print(encrypt_flag(FLAG))
 ```
-output: https://github.com/ceram1c/Crypto_learn/blob/993e8db29f5bee867e15a0774c8b22429cb9625e/Modular%20Arithmetic/Crytohack%20slove/source/output_80fc6398d2fd9f272186d0af510323f9.txt
+- output: https://github.com/ceram1c/Crypto_learn/blob/993e8db29f5bee867e15a0774c8b22429cb9625e/Modular%20Arithmetic/Crytohack%20slove/source/output_80fc6398d2fd9f272186d0af510323f9.txt
 
-dựa theo source code đề bài đã encrypt flag theo từng bước:
+- dựa theo source code đề bài đã encrypt flag theo từng bước:
     - chuyển đổi từ ký tự 1 về dạng bin 8 số sau đó lưu vào plaintext
     - tạo 1 vòng lặp đếm từ bit 1 của plaintext rồi thực hiện:
         - lấy random 1 số e từ 1 -> p sau đó tính n = a^e % p
         - nếu bit hiện tại của vòng lặp =1 thì nhập n vào chuỗi ciphertext
         - nếu = 0 thì n = -n % p rồi nhập vào chuỗi ciphertext
+- file output của bài là file flag sau khi encrypt, vậy ta cần decode ngược lại với bằng cách biến đổi từng số output về bit 1 hay 0
+-  p = 1007621497415251 ta có thể thấy p % 4 = 3 => x^((p-1)/2) % p = 1
+-  vì nếu bit = 0 thì n = -n % p nên ta có thể dùng công thức này để viết lại đoạn bin của flag lúc đầu rôid decode
+- code py:
+```
+a = 288260533169915
+p = 1007621497415251
+
+bit= output
+
+flag=""
+bits=""
+for i in bit:
+    if pow(i, (p-1)//2, p) == 1:
+        bits += '1'
+    else:
+        bits += '0'
+for i in range(0, len(bits), 8):
+    byte = bits[i:i+8]
+    flag += chr(int(byte, 2))
+print(flag)
+```
+![image](https://github.com/user-attachments/assets/5f886fcd-45b9-406a-8f31-b596f70f8727)
+
+'Flag: crypto{p4tterns_1n_re5idu3s}' 
+
+# Modular Binomials
+
+![image](https://github.com/user-attachments/assets/c4443ca9-8b6f-4a02-9f38-c2ce40291c93)
+
+- data: https://github.com/ceram1c/Crypto_learn/blob/06c6ab8ee311ab8a8ef97e53e8aa5be94e823796/Modular%20Arithmetic/Crytohack%20slove/source/data_04a0fe134cf31a6c941377aad75db81c.txt
+
+- đề bài cho 3 phương trình và 5 số trong Data gồm N, c1, c2, e1, e2 
+
+- c1^e2​​ = (a1​⋅p + b1​⋅q)^(e1​⋅e2)​ mod N
+- a1^(−e1​⋅e2) ​​⋅ c1^e2​​ = a1^(−e1​⋅e2) ​​⋅ (a1​⋅p)^(e1​⋅e2) ​+ a1^(−e1​⋅e2)​​ ⋅ (b1​⋅q)^(e1​⋅e2) ​mod N
+- a1^(−e1​⋅e2​)​ ⋅ c1^e2 ​​= p^(e1​⋅e2) ​+ a1^(−e1​⋅e2​) ​⋅ (b1​⋅q)^(e1​⋅e2) ​mod N
+- là tương tự với phương trình tiếp theo sau đó trừ 2 phương trình cho nhau ta được
+- a2^(−e2​⋅e1​) ​⋅ c2^e1​​ − a1^(−e1​⋅e2)​​ ⋅ c1^e2​​ = p^(e2​⋅e1) ​+ a2^(−e2​⋅e1) ​​⋅ (b2​⋅q)^(e2​⋅e1) ​− p^(e1​⋅e2) ​− a1^(−e1​⋅e2)​​ ⋅ (b1​⋅q)^(e1​⋅e2) ​mod N
+
+- a2^(−e2​⋅e1​) ​⋅ c2^e1​​ − a1^(−e1​⋅e2)​​ ⋅ c1^e2​​ = a2^(−e2​⋅e1) ​​⋅ (b2​⋅q)^(e2​⋅e1)) ​− a1^(−e1​⋅e2)​​ ⋅ (b1​⋅q)^(e1​⋅e2) ​mod N
+- ==> q = GCD(
+
+
+
+
+
 
 
 
