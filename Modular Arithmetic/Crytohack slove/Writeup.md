@@ -73,6 +73,98 @@ vậy flag là 9
 
 # Quadratic Residues
 
+![image](https://github.com/user-attachments/assets/8fc33706-0665-491a-bf84-20fcce0c3a20)
+đề bài cho 1 tập hợp gồm 3 số nguyên tỏng đó chỉ có 1 số duy nhất là thặng dư bậc 2, bài yêu cầu tìm ra các số nguyên căn bậc 2 của thặng dư và số bé nhất chính là flag, code py:
+```py
+def Quadratic_Residues(p, a):
+    residues = []
+    for x in range(1, p):
+        residue = (x * x) % p
+        if residue == a:
+            residues.append(x)
+    return residues
+p=29
+ints=[14,6,11]
+for i in ints:
+    print(Quadratic_Residues(p, i))
+```
+
+![image](https://github.com/user-attachments/assets/f58fd1cd-c3ae-4604-a3c0-98f17c15a509)
+vậy flag là 8 
+
+
+# Chinese Remainder Theorem
+
+![image](https://github.com/user-attachments/assets/bf79a732-38d4-4b0d-9c55-1811eafb325b)
+đề bài cho 1 tập hợp:
+```
+x ≡ 2 mod 5
+x ≡ 3 mod 11
+x ≡ 5 mod 17
+```
+và yêu cầu tìm a trong 'x ≡ a mod 935'
+
+vì 935 = 5 * 11 * 17 => ta sử dụng định lý số dư trung quốc để giải quyết bài 
+
+có m1 = 5, m2 = 11, m3 = 17 và M = 935 từ đây ta có thể tính được a theo công thức:
+![image](https://github.com/user-attachments/assets/c9a87da0-802c-4570-8ca6-8e3008ba4c5f)
+code py:
+```
+def chinese_remainder_theorem(a, n, N):
+    result = 0
+    for i in range(len(n)):
+        ai=a[i]
+        ni=n[i]
+        mi= N // ni
+        Mi = Modular_Inverting(mi, ni)
+        result += ai * mi * Mi
+    return result % N
+N=935
+a=[2, 3, 5]
+n=[5, 11, 17]
+print(chinese_remainder_theorem(a, n, N))
+```
+![image](https://github.com/user-attachments/assets/f60237b7-efe7-4b88-95d3-03795d942f81)
+vậy flag là 872
+
+# Adrien's Signs
+![image](https://github.com/user-attachments/assets/b4d12267-5a0c-4793-815e-e66e39c5f7ca)
+
+source: https://github.com/ceram1c/Crypto_learn/blob/993e8db29f5bee867e15a0774c8b22429cb9625e/Modular%20Arithmetic/Crytohack%20slove/source/source_734d7e14251f950935f83d228f8694ab.py
+```py
+from random import randint
+
+a = 288260533169915
+p = 1007621497415251
+
+FLAG = b'crypto{????????????????????}'
+
+
+def encrypt_flag(flag):
+    ciphertext = []
+    plaintext = ''.join([bin(i)[2:].zfill(8) for i in flag])
+    for b in plaintext:
+        e = randint(1, p)
+        n = pow(a, e, p)
+        if b == '1':
+            ciphertext.append(n)
+        else:
+            n = -n % p
+            ciphertext.append(n)
+    return ciphertext
+
+
+print(encrypt_flag(FLAG))
+```
+output: https://github.com/ceram1c/Crypto_learn/blob/993e8db29f5bee867e15a0774c8b22429cb9625e/Modular%20Arithmetic/Crytohack%20slove/source/output_80fc6398d2fd9f272186d0af510323f9.txt
+
+dựa theo source code đề bài đã encrypt flag theo từng bước:
+    - chuyển đổi từ ký tự 1 về dạng bin 8 số sau đó lưu vào plaintext
+    - tạo 1 vòng lặp đếm từ bit 1 của plaintext rồi thực hiện:
+        - lấy random 1 số e từ 1 -> p sau đó tính n = a^e % p
+        - nếu bit hiện tại của vòng lặp =1 thì nhập n vào chuỗi ciphertext
+        - nếu = 0 thì n = -n % p rồi nhập vào chuỗi ciphertext
+
 
 
 
